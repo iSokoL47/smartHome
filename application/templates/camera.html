@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Raspberry Pi Camera Stream</title>
+  </head>
+  <body>
+    <h1>Raspberry Pi Camera Stream</h1>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    <form action="{{ url_for('capture') }}">
+      <button type="submit">Capture Image</button>
+    </form>
+    <a href="/">Back to Home</a>
+  </body>
+</html>
