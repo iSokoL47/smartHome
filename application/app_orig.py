@@ -384,39 +384,47 @@ def control_servo():
 
     try:
         print(f"Command received: {command}")
-        if "open the garage" in command:
-            set_angle(180,garage_pin)
-        elif "close the garage" in command:
-            set_angle(0, garage_pin)
-        elif "open the windows" in command:
-            set_angle(180, windows_pin) 
-        elif "close the windows" in command:
-            set_angle(0, windows_pin)   
-        elif "open the door" in command:
-            set_angle(180, door_pin) 
-        elif "close the door" in command:
-            set_angle(0, door_pin)                             
-        elif "alarm off" in command:
-            alarm_off() 
-        elif "lights on in the kitchen" in command:    
-            leds_kitchen_on()
-        elif "lights off in the kitchen" in command:    
-            leds_kitchen_off() 
-        elif "lights on" in command:
-            turn_on_ledstrip()
-        elif "lights off" in command:
-            turn_off_ledstrip()
-        elif "fan on" in command:
-            fan_on()     
-        elif "fan off" in command:
-            fan_off()    
-        elif "buzzer on" in command:
-            buzzer_on()
-        elif "buzzer off" in command:
-            buzzer_off() 
-        else:
-            return 'Comanda necunoscuta', 400
-        return 'Command executed'
+        if "open" in command or "on" in command:
+            if "garage" in command:
+                set_angle(180,garage_pin)
+            elif "window" in command:
+                set_angle(180, windows_pin)  
+            elif "door" in command:
+                set_angle(180, door_pin)                         
+            elif "alarm" in command:
+                alarm_on() 
+            elif "light" in command and "kitchen" in command:    
+                leds_kitchen_on()
+            elif "light" in command:
+                turn_on_ledstrip()   
+            elif "fan" in command:
+                fan_on()    
+            elif "buzzer" in command:
+                buzzer_on() 
+            else:
+                return 'Comanda necunoscuta', 400
+
+        elif "close" in command or "off" in command:
+            if "garage" in command:
+                set_angle(0,garage_pin)
+            elif "window" in command:
+                set_angle(0, windows_pin)  
+            elif "door" in command:
+                set_angle(0, door_pin)                         
+            elif "alarm" in command:
+                alarm_off() 
+            elif "light" in command and "kitchen" in command:    
+                leds_kitchen_off()
+            elif "light" in command:
+                turn_off_ledstrip()   
+            elif "fan" in command:
+                fan_off()    
+            elif "buzzer" in command:
+                buzzer_off() 
+            else:
+                return 'Comanda necunoscuta', 400
+
+       # return 'Command executed'
     except Exception as e:
         return str(e), 500
 
