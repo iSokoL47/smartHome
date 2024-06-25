@@ -297,6 +297,10 @@ flame_thread.start()
 def index():
     return render_template('index.html')
 
+@app.route('/manual_control')
+def index():
+    return render_template('manual_control.html')
+
 @app.route('/control', methods=['POST'])
 def control_servo():
     data = request.get_json()
@@ -312,7 +316,7 @@ def control_servo():
         elif "close garage" in command:
             set_angle(0, garage_pin)
         else:
-            return 'Comand? necunoscut?', 400
+            return 'Comanda necunoscuta', 400
         return 'Command executed'
     except Exception as e:
         return str(e), 500

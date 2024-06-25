@@ -49,6 +49,14 @@
             margin-top: 20px;
             color: #333;
         }
+        a {
+        color: #4CAF50;
+        text-decoration: none;
+        font-size: 24px;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -59,6 +67,8 @@
         <i class="fas fa-microphone microphone-icon"></i>
     </button>
     <p id="recorded-text"></p>
+    <a href="/live">Go Live</a>
+    <a href="/manual_control">Manual control</a>
     <script>
     // Configure speech recognition
     let recognition = new webkitSpeechRecognition();

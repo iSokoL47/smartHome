@@ -92,7 +92,7 @@ lcd.create_char(1, fan_symbol)
 reader = SimpleMFRC522()
 
 # Initiere DTH sensor
-dht_device = adafruit_dht.DHT11(board.D6)  # GPIO6
+dht_device = adafruit_dht.DHT11(board.D26)  # GPIO6
 
 # Creare neopixel obiect si initializare librarie
 strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
@@ -109,6 +109,7 @@ alarm = False
 # capture image de la button
 def capture2():
     frame = picam2.capture_array()
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     directory = "images"
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -120,6 +121,7 @@ def capture2():
 def gen_frames():
     while True:
         frame = picam2.capture_array()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Conversia din BGR în RGB
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
@@ -349,12 +351,12 @@ flame_thread = threading.Thread(target=monitor_flame)
 flame_thread.daemon = True
 flame_thread.start()
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
-
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/live')
+def live():
     return render_template('camera.html')
 
 @app.route('/video_feed')
@@ -370,7 +372,7 @@ def capture():
         os.makedirs(directory)
     filename = f"{directory}/{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jpg"
     cv2.imwrite(filename, frame_rgb)
-    return redirect(url_for('index'))
+    return redirect(url_for('live'))
 
 @app.route('/control', methods=['POST'])
 def control_servo():
@@ -413,7 +415,7 @@ def control_servo():
         elif "buzzer off" in command:
             buzzer_off() 
         else:
-            return 'Comand? necunoscut?', 400
+            return 'Comanda necunoscuta', 400
         return 'Command executed'
     except Exception as e:
         return str(e), 500
